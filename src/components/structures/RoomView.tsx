@@ -185,12 +185,20 @@ interface IRoomProps extends RoomViewProps {
      * If true, hide the pinned messages banner
      */
     hidePinnedMessageBanner?: boolean;
+
+    /**
+     * If true, the read receipts and markers are only send when the room view is focused.
+     * The user has to focus the room view in order to clear any unreads and to move the unread marker to the bottom of the view.
+     * Otherwise, if the user interacts with the UI when the room view is displayed, read receipts and markers are sent.
+     */
+    disableReadReceiptsAndMarkersOnActivity?: boolean;
 }
 
 export { MainSplitContentType };
 
 export interface IRoomState {
     room?: Room;
+
     roomId?: string;
     roomAlias?: string;
     roomLoading: boolean;
@@ -2176,6 +2184,19 @@ export class RoomView extends React.Component<IRoomProps, IRoomState> {
         }
     };
 
+    /**
+     * Handles the focus event on the RoomView component.
+     *
+     * Sends read receipts and updates the read marker if the
+     * disableReadReceiptsAndMarkersOnActivity prop is set.
+     */
+    private onFocus = (): void => {
+        if (!this.props.disableReadReceiptsAndMarkersOnActivity) return;
+
+        this.messagePanel?.sendReadReceipts();
+        this.messagePanel?.updateReadMarker();
+    };
+
     public render(): ReactNode {
         if (!this.context.client) return null;
         const { isRoomEncrypted } = this.state;
@@ -2533,7 +2554,9 @@ export class RoomView extends React.Component<IRoomProps, IRoomState> {
                     timelineSet={this.state.room.getUnfilteredTimelineSet()}
                     showReadReceipts={this.state.showReadReceipts}
                     manageReadReceipts={!this.state.isPeeking}
-                    sendReadReceiptOnLoad={!this.state.wasContextSwitch}
+                    sendReadReceiptOnLoad={
+                        !this.state.wasContextSwitch && !this.props.disableReadReceiptsAndMarkersOnActivity
+                    }
                     manageReadMarkers={!this.state.isPeeking}
                     hidden={hideMessagePanel}
                     highlightedEventId={highlightedEventId}
@@ -2550,6 +2573,7 @@ export class RoomView extends React.Component<IRoomProps, IRoomState> {
                     showReactions={true}
                     layout={this.state.layout}
                     editState={this.state.editState}
+                    disableReadReceiptsAndMarkersOnActivity={this.props.disableReadReceiptsAndMarkersOnActivity}
                 />
             );
         }
@@ -2677,7 +2701,7 @@ export class RoomView extends React.Component<IRoomProps, IRoomState> {
 
         return (
             <ScopedRoomContextProvider {...this.state} roomViewStore={this.roomViewStore}>
-                <div className={mainClasses} ref={this.roomView} onKeyDown={this.onReactKeyDown}>
+                <div className={mainClasses} ref={this.roomView} onKeyDown={this.onReactKeyDown} onFocus={this.onFocus}>
                     {showChatEffects && this.roomView.current && (
                         <EffectsOverlay roomWidth={this.roomView.current.offsetWidth} />
                     )}
