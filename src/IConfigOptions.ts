@@ -55,6 +55,7 @@ export interface IConfigOptions {
     force_verification?: boolean; // if true, users must verify new logins
 
     map_style_url?: string; // for location-shared maps
+    tenor_api_key?: string; // Tenor GIF search API key
 
     embedded_pages?: {
         welcome_url?: string;

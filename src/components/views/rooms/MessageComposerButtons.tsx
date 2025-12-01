@@ -31,6 +31,7 @@ import { useDispatcher } from "../../../hooks/useDispatcher";
 import { chromeFileInputFix } from "../../../utils/BrowserWorkarounds";
 import IconizedContextMenu, { IconizedContextMenuOptionList } from "../context_menus/IconizedContextMenu";
 import { EmojiButton } from "./EmojiButton";
+import GifButton from "./GifButton";
 import { filterBoolean } from "../../../utils/arrays";
 import { useSettingValue } from "../../../hooks/useSettings";
 import AccessibleButton, { type ButtonEvent } from "../elements/AccessibleButton";
@@ -82,6 +83,7 @@ const MessageComposerButtons: React.FC<IProps> = (props: IProps) => {
         ];
         moreButtons = [
             uploadButton(), // props passed via UploadButtonContext
+            gifButton(props, room),
             showStickersButton(props),
             voiceRecordingButton(props, narrow),
             props.showPollsButton ? pollButton(room, props.relation) : null,
@@ -101,6 +103,7 @@ const MessageComposerButtons: React.FC<IProps> = (props: IProps) => {
             uploadButton(), // props passed via UploadButtonContext
         ];
         moreButtons = [
+            gifButton(props, room),
             showStickersButton(props),
             voiceRecordingButton(props, narrow),
             props.showPollsButton ? pollButton(room, props.relation) : null,
@@ -243,6 +246,10 @@ const UploadButton: React.FC = () => {
         />
     );
 };
+
+function gifButton(props: IProps, room: Room): ReactElement {
+    return <GifButton key="gif" roomId={room.roomId} relation={props.relation} menuPosition={props.menuPosition} />;
+}
 
 function showStickersButton(props: IProps): ReactElement | null {
     return props.showStickersButton ? (

@@ -268,6 +268,10 @@ Please see LICENSE files in the repository root for full details.
     mask-image: url("@vector-im/compound-design-tokens/icons/location-pin-solid.svg");
 }
 
+.mx_MessageComposer_gif::before {
+    mask-image: url("@vector-im/compound-design-tokens/icons/image.svg");
+}
+
 .mx_MessageComposer_stickers::before {
     mask-image: url("$(res)/img/element-icons/room/composer/sticker.svg");
 }
@@ -309,6 +313,53 @@ Please see LICENSE files in the repository root for full details.
     .mx_MessageComposer_noperm_error {
         height: 50px;
     }
+}
+
+.mx_GifPickerMenu {
+    width: 320px;
+    max-height: 360px;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.mx_GifPickerMenu_search {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid $primary-hairline-color;
+    background-color: $background;
+    color: $primary-content;
+    font: var(--cpd-font-body-sm-regular);
+}
+
+.mx_GifPickerMenu_loading {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.mx_GifPickerMenu_grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.mx_GifPickerMenu_item {
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mx_GifPickerMenu_thumbnail {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /**
