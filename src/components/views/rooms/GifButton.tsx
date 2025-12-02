@@ -6,7 +6,6 @@ import React, { type ReactNode, type SyntheticEvent, useContext } from "react";
 import classNames from "classnames";
 import { type IEventRelation } from "matrix-js-sdk/src/matrix";
 
-import { _t } from "../../../languageHandler";
 import { CollapsibleButton } from "./CollapsibleButton";
 import { aboveLeftOf, useContextMenu, type MenuProps } from "../../structures/ContextMenu";
 import { OverflowMenuContext } from "./MessageComposerButtons";
@@ -51,7 +50,6 @@ const GifButton: React.FC<IGifButtonProps> = ({ roomId, relation, menuPosition }
                 className={className}
                 iconClassName="mx_MessageComposer_gif"
                 onClick={openMenu}
-                title={_t("common|gif")}
                 inputRef={button}
             />
             {contextMenu}
