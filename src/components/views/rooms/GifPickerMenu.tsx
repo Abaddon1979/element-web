@@ -78,7 +78,11 @@ const GifPickerMenu: React.FC<IProps> = ({ menuPosition, onFinished, roomId, rel
 
         try {
             setLoading(true);
-            const res = await fetch(gif.url);
+
+            // Download the GIF data and upload it to the homeserver so it appears
+            // inline in the timeline like a normal image message (Discord-style).
+            const fetchUrl = gif.url;
+            const res = await fetch(fetchUrl);
             if (!res.ok) {
                 throw new Error(`Failed to download GIF: ${res.status}`);
             }
